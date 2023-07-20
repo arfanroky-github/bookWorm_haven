@@ -1,12 +1,12 @@
 import MenuItem from "./MenuItem";
 
+// when scrolling the nav bar should blur
 const Navbar = () => {
   return (
-    <header className="bg-gray-800 md:sticky top-0 z-10 ">
+    <header className="bg-gray-800 md:sticky top-0 z-10 shadow-lg">
       <nav className="container mx-auto flex justify-between items-center h-16">
         <a className="title-font font-bold text-gray-400">
-          B<span className="text-orange-500">o</span>o
-          <span className="text-orange-500">k</span> Catalog
+          📚 BookWorm Haven 🐛
         </a>
         <MenuItem />
       </nav>

@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+body{
+  background: #1f2937;
+}
+
 ul,
 ol {
   margin: 0;

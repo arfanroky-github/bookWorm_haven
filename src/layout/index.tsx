@@ -1,14 +1,13 @@
+import { Outlet } from "react-router-dom";
+import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-function Layout({ children }: LayoutProps) {
+function Layout() {
   return (
     <div>
       <Navbar />
-      {children}
+      <Outlet />
+      <Footer />
     </div>
   );
 }
