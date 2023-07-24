@@ -1,9 +1,43 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Link } from "react-router-dom";
+import { useSignupUserMutation } from "../redux/features/user/userApi";
+import { FormEvent } from "react";
 
 const Signup = () => {
+  const [signupUser, { isLoading }] = useSignupUserMutation();
+
+  const handleSignup = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+
+    const email = e.currentTarget["email"] as HTMLInputElement;
+    const password = e.currentTarget["password"] as HTMLInputElement;
+
+    if (!email.value || email.value === "") {
+      alert("Email is required!");
+      return; // Prevent form submission
+    }
+
+    const data = {
+      data: {
+        email: email.value,
+        password: password.value,
+      },
+    };
+
+    const result = await signupUser(data);
+
+    if (result?.data?.id);
+    {
+      alert("Sign up successfully");
+    }
+    if (result.error.status === 400) {
+      return alert(result?.error?.data?.message);
+    }
+  };
+
   return (
     <div className="hero min-h-screen bg-base-200">
-      <div className="container mx-auto flex items-center justify-between flex-row-reverse gap-8">
+      <div className="container mx-auto lg:flex items-center justify-between flex-row-reverse gap-8">
         <div className="text-center lg:text-left flex-1">
           <h1 className="text-5xl font-bold">Register now!</h1>
           <p className="py-6">
@@ -17,12 +51,13 @@ const Signup = () => {
           </p>
         </div>
         <div className="card flex-shrink-0 max-w-lg w-full shadow-2xl bg-base-100 p-6">
-          <div className="card-body">
+          <form onSubmit={handleSignup} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
+                name="email"
                 type="text"
                 placeholder="email"
                 className="input input-bordered"
@@ -33,7 +68,8 @@ const Signup = () => {
                 <span className="label-text">Password</span>
               </label>
               <input
-                type="text"
+                type="password"
+                name="password"
                 placeholder="password"
                 className="input input-bordered"
               />
@@ -44,7 +80,7 @@ const Signup = () => {
               </label>
             </div>
             <p className="text-center mt-5 capitalize">
-             You have an account?
+              You have an account?
               <Link
                 to={"/login"}
                 className="ml-2 tracking-wide underline text-primary"
@@ -53,12 +89,17 @@ const Signup = () => {
               </Link>
             </p>
             <div className="form-control">
-              <button className="btn btn-primary">Login</button>
+              <button disabled={isLoading} className="btn btn-primary">
+                {isLoading && (
+                  <span className="loading loading-spinner loading-md"></span>
+                )}{" "}
+                SignUp
+              </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
   );
-}
-export default Signup
+};
+export default Signup;

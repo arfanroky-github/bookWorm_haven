@@ -21,7 +21,7 @@ const MenuItem = () => {
       {menus.map((menu, index) => (
         <li className="flex items-center gap-x-1 text-gray-300 capitalize" key={index}>
           <span>{menu.icon}</span>
-          <a href={menu.route}>{menu.name}</a>
+          <Link to={menu.route}>{menu.name}</Link>
         </li>
       ))}
       <li>
