@@ -5,18 +5,27 @@ import TableToolbar from "./TableToolbar";
 import { BsThreeDots } from "react-icons/bs";
 
 const AllBooks = () => {
-  const { searchTerm, page, limit, sortBy, sortOrder } = useAppSelector(
+  const { searchTerm, author, genre, publication, page, limit, sortBy, sortOrder } = useAppSelector(
     (state) => state.book
   );
-  const { isLoading, data: books } = useGetAllBooksQuery(undefined);
+  const searchParams = {
+    searchTerm,
+    author,
+    genre,
+    publication,
+    page,
+    limit,
+    sortBy,
+    sortOrder,
+  }
+  const { isLoading, data: books } = useGetAllBooksQuery(searchParams);
 
   if (isLoading) return <div>Loading...</div>;
-
-  console.log(searchTerm)
+  console.log(books?.data)
 
   return (
     <div className="text-white shadow-lg rounded-md px-4   py-10 container mx-auto space-y-2 h-screen">
-      <TableToolbar books={books.data}/>
+      <TableToolbar books={books?.data}/>
       <div className="flex border border-gray-500 rounded">
         <table className="w-full min-w-max text-left capitalize">
           <thead>
@@ -32,8 +41,8 @@ const AllBooks = () => {
             </tr>
           </thead>
           <tbody>
-            {books.data.map((book) => (
-              <tr key={book.id} className="border-b border-gray-500">
+            {books?.data.map((book) => (
+              <tr key={book?.id} className="border-b border-gray-500">
                 <td className="py-1 px-2 w-8 text-center">
                   <input type="checkbox" />
                 </td>

@@ -1,29 +1,30 @@
 import { FaArrowDown } from "react-icons/fa";
-import { setSearchTerm } from "../../redux/features/book/bookSlice";
+import { handleFilter } from "../../redux/features/book/bookSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import {
-  DetailedHTMLProps,
-  HTMLAttributes,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
+import { BookType } from "../../redux/features/book/bookInterface";
 
 const TableToolbar = ({ books }) => {
   const [dropdownItem, setDropDownItem] = useState<string>();
   const { searchTerm } = useAppSelector((state) => state.book);
   const dispatch = useAppDispatch();
-  const closeRef= useRef<HTMLUListElement>();
-
-  // handle search
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchTerm(e.target.value));
-  };
+  const closeRef = useRef<HTMLUListElement>();
 
   // handle filter
-  const handleFilter = (e: React.MouseEvent<HTMLLIElement>) => {
-    dispatch()
-  }
+  const handleFilterAndSearch = ({
+    name,
+    value,
+  }: {
+    name: string;
+    value: string;
+  }) => {
+    dispatch(
+      handleFilter({
+        name: name,
+        value: value,
+      })
+    );
+  };
 
   // author
   const authorList = books.map((book) => book.author);
@@ -55,7 +56,7 @@ const TableToolbar = ({ books }) => {
       <div>
         <input
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={(e) => handleFilterAndSearch(e.target)}
           type="text"
           placeholder="Type here"
           className="input input-bordered w-full max-w-xs"
@@ -84,6 +85,13 @@ const TableToolbar = ({ books }) => {
             >
               {getItemsRemoveDuplicate(authorList as string[]).map((author) => (
                 <li
+                  onClick={() => {
+                    handleFilterAndSearch({
+                      name: "author",
+                      value: author,
+                    });
+                    setDropDownItem("");
+                  }}
                   key={author}
                   className="cursor-pointer capitalize hover:bg-base-100"
                 >
@@ -105,7 +113,17 @@ const TableToolbar = ({ books }) => {
               }`}
             >
               {getItemsRemoveDuplicate(genreList as string[]).map((genre) => (
-                <li key={genre} className="cursor-pointer capitalize">
+                <li
+                  onClick={() => {
+                    handleFilterAndSearch({
+                      name: "genre",
+                      value: genre,
+                    });
+                    setDropDownItem("");
+                  }}
+                  key={genre}
+                  className="cursor-pointer capitalize"
+                >
                   {genre}
                 </li>
               ))}
@@ -125,7 +143,17 @@ const TableToolbar = ({ books }) => {
             >
               {getItemsRemoveDuplicate(publicationList as string[]).map(
                 (pub) => (
-                  <li key={pub} className="cursor-pointer capitalize">
+                  <li
+                    onClick={() => {
+                      handleFilterAndSearch({
+                        name: "publication",
+                        value: pub,
+                      });
+                      setDropDownItem("");
+                    }}
+                    key={pub}
+                    className="cursor-pointer capitalize"
+                  >
                     {pub}
                   </li>
                 )

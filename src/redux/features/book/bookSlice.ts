@@ -4,9 +4,9 @@ import { BookSearchFiltarableType } from "./bookInterface";
 const initialState: BookSearchFiltarableType = {
   searchTerm: "",
   page: 1,
-  limit: 10,
-  sortBy: "title",
-  sortOrder: "asc",
+  limit: 4,
+  sortBy: "",
+  sortOrder: "",
   author: "",
   genre: "",
   publication: "",
@@ -18,43 +18,32 @@ const bookSlice = createSlice({
   reducers: {
     handleFilter(
       state,
-      action: PayloadAction<{ type: string; payload: string }>
+      action: PayloadAction<{ name: string; value: string }>
     ) {
-      switch (action.type) {
-        case "searchTerm":
-          return { ...state, searchTerm: action.payload };
-        case "author":
-          return { ...state, author: action.payload };
-        case "genre":
-          return { ...state, genre: action.payload };
-        case "publication":
-          return { ...state, publication: action.payload };
-        default:
-          return state;
-      }
+      const { name, value } = action.payload;
+      return {
+        ...state,
+        [name]: value,
+      };
     },
-    handlePageAndLimit(
-      state,
-      action: PayloadAction<{ type: string; payload: number }>
-    ) {
-      switch (action.type) {
+    handlePageAndLimit(state, action: PayloadAction<number>) {
+      const { type, payload } = action;
+      switch (type) {
         case "page":
-          return { ...state, page: action.payload };
+          return { ...state, page: payload };
         case "limit":
-          return { ...state, limit: action.payload };
+          return { ...state, limit: payload };
         default:
           return state;
       }
     },
-    handleSortByAndSortOrder(
-      state,
-      action: PayloadAction<{ type: string; payload: string }>
-    ) {
-      switch (action.type) {
+    handleSortByAndSortOrder(state, action: PayloadAction<string>) {
+      const { type, payload } = action;
+      switch (type) {
         case "sortBy":
-          return { ...state, sortBy: action.payload };
+          return { ...state, sortBy: payload };
         case "sortOrder":
-          return { ...state, sortOrder: action.payload };
+          return { ...state, sortOrder: payload };
         default:
           return state;
       }
@@ -62,7 +51,7 @@ const bookSlice = createSlice({
   },
 });
 
-export const { setSearchTerm, handlePageAndLimit, handleSortByAndSortOrder } =
+export const { handleFilter, handlePageAndLimit, handleSortByAndSortOrder } =
   bookSlice.actions;
 
 export const bookReducer = bookSlice.reducer;

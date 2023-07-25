@@ -2,7 +2,7 @@ const TablePagination = () => {
   return (
     <div className="flex items-center justify-between">
       <select className="select select-bordered w-full max-w-xs">
-        <option disabled selected>
+        <option >
           Who shot first?
         </option>
         <option>Han Solo</option>

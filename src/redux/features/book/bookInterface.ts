@@ -8,8 +8,8 @@ type BookFilterType = {
 export interface BookSearchFiltarableType extends BookFilterType {
   page: number;
   limit: number;
-  sortBy: string;
-  sortOrder: string;
+  sortBy?: string;
+  sortOrder?: string;
 }
 
 export type Reviews = {
